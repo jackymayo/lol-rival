@@ -5,18 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var request = require('request');
 
-url = 'https://na1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/BarelyOtaku?api_key=RGAPI-704d26b5-c52d-400b-9fb0-204cabbb21c3';
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-console.warn("Test")
 var app = express();
 
-request(url, function(error, response, body){
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
-});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

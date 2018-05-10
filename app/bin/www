@@ -7,9 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('app:server');
 var http = require('http');
-var request = require('request');
 
-url = 'https://na1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/BarelyOtaku?api_key=RGAPI-704d26b5-c52d-400b-9fb0-204cabbb21c3';
 
 /**
  * Get port from environment and store in Express.
@@ -33,11 +31,7 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 
-request(url, function(error, response, body){
-  console.log('error:', error); // Print the error if one occurred
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log('body:', body); // Print the HTML for the Google homepage.
-});
+
 /**
  * Normalize a port into a number, string, or false.
  */
