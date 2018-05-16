@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.center
+    h1 lol rival
+    form(name="info", method="get" action="/info")
+      div
+        span Username
+        input(type="text", name="username").inputText
+      div
+        span Rival
+        input(type="text", name="rival_username").inputText
+      div 
+        input(type="submit", value="Submit")
