@@ -3,6 +3,93 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+.champ {
+  position: relative;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+}
+.inputText{
+  margin-left: 14px;
+  width: 600px;
+}
+.center{  
+  width:1080px;
+  margin: 0 auto;
+}
+.match {
+  padding: 20px 30px 20px 10px;
+  margin-bottom: 30px;
+  border-radius: 1px;
+  width: 100%;
+}
+
+.matchList{
+  max-width: 900px;
+  display: block;
+}
+.win{
+  background-color: #A4D0EB;
+  border-left: 4px solid #67B2E2;
+}
+.user{
+  border: 2px solid white;
+}
+.loss{
+  background-color: #E1B6B4;
+  border-left: 4px solid red;
+}
+.left{ 
+  width: 240px;
+  float: left;
+}
+.right{
+  width: 240px;
+  float: right;
+}
+.submit{
+  width: 80px;
+  height: 30px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+span {
+  width: 50px
+}
 a {
   color: #00B7FF;
+}
+
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.clearfix {
+  display: inline-block;
+}
+
+html[xmlns] .clearfix {
+  display: block;
+}
+
+* html .clearfix {
+  height: 1%;
 }

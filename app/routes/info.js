@@ -148,6 +148,8 @@ router.get('/', function(req,res,next){
       search_rival_in_matches(user, rival, values[i] , ret, misc_info, misc_info );
       if (ret.length !== 0){
         match_results.push(misc_info.won);
+        user_locations.push(misc_info.user_loc);
+        rival_locations.push(misc_info.rival_loc);
         all_matches.push(ret);
       }
 		}
