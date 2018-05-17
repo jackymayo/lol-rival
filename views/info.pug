@@ -1,0 +1,41 @@
+extends layout
+
+block content 
+		h1 User: #{username}
+		h2 rival: #{rival}    
+		h2 Number of games: #{number}
+		div.matchList
+			- var matchList = match
+			- var matchListResult = match_results
+			- var userLocs = user_locations
+			- var rivalLocs = rival_locations
+			- for(var i = 0; i < matchList.length; i++){
+				-var win = matchListResult[i];
+				- if (win)
+					| <div class='match clearfix win'>
+				- else {
+					| <div class='match clearfix loss'>
+				-}
+					- for(var j = 0; j < 2; j++){
+						- if (j === 0){
+							| <div class='left'>
+						- } else {
+							| <div class='right'>
+						- } 
+								-for(var k = 0; k < 10; k++){
+									- if (k % 2 === 0)
+										- var position = (j)*5+(k/2)
+										- var tmp = matchList[i][j][k]
+										- if (userLocs[i] === position)
+											| <li class="user">
+										- else
+											| <li>
+										img(src=tmp class="champ")
+									- else 
+										| #{matchList[i][j][k]}
+										| </li>
+								-}
+						| </div>
+					-}
+				| </div>
+			-}
