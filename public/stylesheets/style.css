@@ -13,7 +13,6 @@ body {
 }
 .champ {
   position: relative;
-  top: 4px;
   width: 24px;
   height: 24px;
   margin-right: 4px;
@@ -22,13 +21,16 @@ body {
   margin-left: 14px;
   width: 600px;
 }
-.center{  
-  width:1080px;
+.center{    
+  position: relative;
+  top: 50px;
+  width: 35%;
+  height:100%;
   margin: 0 auto;
 }
 .match {
-  padding: 20px 30px 20px 10px;
-  margin-bottom: 30px;
+  padding: 20px 20px 20px 10px;
+  margin-bottom: 20px;
   border-radius: 1px;
   width: 100%;
 }
@@ -39,14 +41,14 @@ body {
 }
 .win{
   background-color: #A4D0EB;
-  border-left: 4px solid #67B2E2;
+  border-left: 5px solid #67B2E2;
 }
 .user{
   border: 2px solid white;
 }
 .loss{
   background-color: #E1B6B4;
-  border-left: 4px solid red;
+  border-left: 5px solid red;
 }
 .left{ 
   width: 240px;
@@ -72,7 +74,7 @@ a {
   color: #00B7FF;
 }
 
-
+/* 
 .clearfix:after {
   content: ".";
   display: block;
@@ -92,4 +94,4 @@ html[xmlns] .clearfix {
 
 * html .clearfix {
   height: 1%;
-}
+} */
