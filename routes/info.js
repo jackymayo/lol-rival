@@ -6,7 +6,8 @@ var fs = require('fs');
 // if (!fs.existsSync('/public/data/champion.json')){
 
 // }
-const api_key = 'RGAPI-d3ab0378-2e5d-495e-a4ec-a1797384849f'
+
+const api_key = fs.readFileSync('public/data/api.txt', "utf-8");
 const api_key_query = '?api_key=' +  api_key;
 const patch_version = "8.9.1";
 const ddragon_host = 'http://ddragon.leagueoflegends.com/cdn/' + patch_version;
