@@ -28,6 +28,8 @@ block content
 										- var tmp = matchList[i][j][k]
 										- if (userLocs[i] === position)
 											| <li class="user">
+										- else if(rivalLocs[i] === position)
+											| <li class="rival">
 										- else
 											| <li>
 										img(src=tmp class="champ")

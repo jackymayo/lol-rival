@@ -46,6 +46,9 @@ body {
 .user{
   border: 2px solid white;
 }
+.rival{
+  border: 2px solid black;
+}
 .loss{
   background-color: #E1B6B4;
   border-left: 5px solid red;
