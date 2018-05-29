@@ -87,9 +87,9 @@ function retrieve_match(match_id){
 }
 function search_rival_in_matches(user_id, rival_id, match_body, ret, misc_info){
   var response = JSON.parse(match_body);
+  // fs.writeFileSync("public/data/matchid.json", JSON.stringify(response));
   var match_id = response['gameId'];
   var userWins = false;
-  console.warn(match_id);
   var participants = response['participantIdentities'];
 
 	var left = [];
@@ -143,6 +143,7 @@ router.get('/', function(req,res,next){
     var match_results = [];
     var user_locations = [];
     var rival_locations = [];
+    var list_of_kdas = [];
     for(var i = 2; i < values.length; i++){
       var ret = []
       var misc_info = { won: false, user_loc: 0, rival_loc: 0} ;
