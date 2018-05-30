@@ -153,12 +153,14 @@ router.get('/', function(req,res,next){
         user_locations.push(misc_info.user_loc);
         rival_locations.push(misc_info.rival_loc);
         all_matches.push(ret);
+        list_of_kdas.push()
       }
 		}
 		console.warn(all_matches);
     console.warn(all_matches.length);
     console.warn(match_results);
-    res.render('info', { username: username, rival: rival_username, 
+    var title = "lol-rival: " + username;
+    res.render('info', { title: title, username, rival: rival_username, 
         match: all_matches, number: all_matches.length,
       match_results: match_results, user_locations: user_locations,
     rival_locations: rival_locations})    
