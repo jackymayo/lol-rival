@@ -1,43 +1,45 @@
 extends layout
 
 block content 
-		h1 User: #{username}
-		h2 rival: #{rival}    
-		h2 Number of games: #{number}
+		h3 Username: #{username}
+		h3 Rival: #{rival}    
+		h3 Number of games played together: #{number}
 		div.matchList
 			- var matchList = match
 			- var matchListResult = match_results
 			- var userLocs = user_locations
-			- var rivalLocs = rival_locations
+			- var rivalLocs = rival_locations			
 			- for(var i = 0; i < matchList.length; i++){
-				-var win = matchListResult[i];
+				-var win = matchListResult[i]
+				- var matchIds = match_ids[i]	
 				- if (win)
 					| <div class='match clearfix win'>
 				- else {
 					| <div class='match clearfix loss'>
-				-}
-					- for(var j = 0; j < 2; j++){
-						- if (j === 0){
-							| <div class='left'>
-						- } else {
-							| <div class='right'>
-						- } 
-								-for(var k = 0; k < 10; k++){
-									- if (k % 2 === 0)
-										- var position = (j)*5+(k/2)
-										- var tmp = matchList[i][j][k]
-										- if (userLocs[i] === position)
-											| <li class="user">
-										- else if(rivalLocs[i] === position)
-											| <li class="rival">
-										- else
-											| <li>
-										img(src=tmp class="champ")
-									- else 
-										| #{matchList[i][j][k]}
-										| </li>
-								-}
-						| </div>
+				-}							
+				| <a href='#{matchIds}'><span class="link"></span></a>
+				- for(var j = 0; j < 2; j++){
+					- if (j === 0){
+						| <div class='left'>
+					- } else {
+						| <div class='right'>
+					- } 
+						-for(var k = 0; k < 10; k++){
+							- if (k % 2 === 0)
+								- var position = (j)*5+(k/2)
+								- var tmp = matchList[i][j][k]
+								- if (userLocs[i] === position)
+									| <li class="user">
+								- else if(rivalLocs[i] === position)
+									| <li class="rival">
+								- else
+									| <li>
+								img(src=tmp class="champ")
+							- else 
+								| #{matchList[i][j][k]}
+								| </li>
+						-}
+					| </div>
 					-}
 				| </div>
 			-}
