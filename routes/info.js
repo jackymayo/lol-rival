@@ -16,6 +16,7 @@ const championsJSON = JSON.parse(fs.readFileSync( 'public/data/champion.json', "
 var account_id_host = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/';
 var match_list_host = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/';
 var match_detail_host = 'https://na1.api.riotgames.com/lol/match/v3/matches/';
+var match_history_url = 'https://matchhistory.na.leagueoflegends.com/en/#match-details/NA1/';
 var username = 'BarelyOtaku';
 var url_id = account_id_host + username + api_key_query;
 var rival_username = 'Gyoza';
@@ -85,7 +86,16 @@ function retrieve_match(match_id){
     })
   });
 }
-function search_rival_in_matches(user_id, rival_id, match_body, ret, misc_info){
+
+/**
+* Search for information and store it into the list passed as parameter
+* @param{string} user_id - Rival's account ID
+* @param{string} rival_id - Rival's account ID
+* @param{string} match_body - JSON's string from Riot API
+* @param{array} champImages - array with image locations
+* @param{Object} misc_info - 
+*/
+function search_rival_in_matches(user_id, rival_id, match_body, champImages, misc_info){
   var response = JSON.parse(match_body);
   // fs.writeFileSync("public/data/matchid.json", JSON.stringify(response));
   var match_id = response['gameId'];
@@ -108,11 +118,11 @@ function search_rival_in_matches(user_id, rival_id, match_body, ret, misc_info){
         if (Math.floor(j/ 5)  === 0){ left.push(champImage); left.push(summoner);}
         else{ right.push(champImage); right.push(summoner);}
       }
-			ret.push(left);
-			ret.push(right);
+			champImages.push(left);
+			champImages.push(right);
     }
   }
-
+  return match_id;
 }
 
 
@@ -144,26 +154,28 @@ router.get('/', function(req,res,next){
     var user_locations = [];
     var rival_locations = [];
     var list_of_kdas = [];
+    var match_ids = [];
     for(var i = 2; i < values.length; i++){
-      var ret = []
+      var champImages = []
       var misc_info = { won: false, user_loc: 0, rival_loc: 0} ;
-      search_rival_in_matches(user, rival, values[i] , ret, misc_info, misc_info );
-      if (ret.length !== 0){
+      var match_id = match_history_url + search_rival_in_matches(user, rival, values[i] , champImages, misc_info );
+      if (champImages.length !== 0){
         match_results.push(misc_info.won);
         user_locations.push(misc_info.user_loc);
         rival_locations.push(misc_info.rival_loc);
-        all_matches.push(ret);
-        list_of_kdas.push()
+        all_matches.push(champImages);
+        // list_of_kdas.push()
+        match_ids.push(match_id)
       }
 		}
-		console.warn(all_matches);
-    console.warn(all_matches.length);
-    console.warn(match_results);
+		// console.warn(all_matches);    
+    console.warn(match_ids);
     var title = "lol-rival: " + username;
-    res.render('info', { title: title, username, rival: rival_username, 
-        match: all_matches, number: all_matches.length,
-      match_results: match_results, user_locations: user_locations,
-    rival_locations: rival_locations})    
+    res.render('info', { 
+      title: title, username, rival: rival_username, 
+      match: all_matches, number: all_matches.length,
+      match_results: match_results,user_locations: user_locations,
+    rival_locations: rival_locations, match_ids: match_ids})    
   })
   .catch(console.warn);
   
