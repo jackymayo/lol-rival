@@ -1,5 +1,7 @@
-body {
+body {  
+  width: 100%;
   padding: 50px;
+  vertical-align: middle;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -10,6 +12,13 @@ body {
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
+}
+
+
+.textInputFix {
+  width: 286px;
+  font-size: 17px;
+  height: 42px;
 }
 .champ {
   position: relative;
@@ -22,11 +31,9 @@ body {
   width: 600px;
 }
 .center{    
-  position: relative;
-  top: 50px;
-  width: 35%;
-  height:100%;
-  margin: 0 auto;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
 }
 .match {
   position: relative;

@@ -1,17 +1,28 @@
 extends layout
 
 block content
-  div.center
-    h1 lol rival
-    p Search for recent matches with rival
-    form(name="info", method="get" action="/info")
-      div.form-group
-        label Username
-        input(type="text", class='form-control', name="username")
-        small(class="form-text text-muted") Example: Jacky Ma MTL
-      div.form-group
-        span Rival
-        input(type="text", name="rival_username").form-control
-        small(class="form-text text-muted") Example: Doctor Octopus
-      div 
-        input(type="submit", class='btn btn-primary', value="Search")
+  div.container-fluid
+    div(style="height: 75px")
+    div.row
+      div.center
+        img(src='./images/lol-rival.png')
+    div.row
+      div.center 
+        h1 lol rival
+    div.row
+      div.center Search for recent matches with rival
+    div(style="height: 10px")
+    div.row
+      form(class="center", name="info", method="get" action="/info")
+        div.form-group
+          label Username
+          div.textInputFix
+            input(type="text", class='form-control', name="username")
+          small(class="form-text text-muted") Example: Jacky Ma MTL
+        div.form-group
+          span Rival
+          div.textInputFix
+            input(type="text", name="rival_username").form-control
+          small(class="form-text text-muted") Example: Doctor Octopus
+        div.center
+          input(type="submit", class='btn btn-primary', value="Search")
