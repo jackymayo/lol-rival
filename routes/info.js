@@ -175,7 +175,9 @@ router.get('/', function(req,res,next){
       title: title, username, rival: rival_username, 
       match: all_matches, number: all_matches.length,
       match_results: match_results,user_locations: user_locations,
-    rival_locations: rival_locations, match_ids: match_ids})    
+      rival_locations: rival_locations, match_ids: match_ids
+      }
+    )    
   })
   .catch(console.warn);
   
