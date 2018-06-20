@@ -3,6 +3,7 @@ var router = express.Router();
 const util = require('util')
 var request = require('request');
 var fs = require('fs');
+
 // TODO: check for realm 
 // if (!fs.existsSync('/public/data/champion.json')){
 
@@ -42,9 +43,18 @@ function getChampionById(map, id){
     return "n/a";
 }
 
+function accountFileExists(accountId, path){  
+  if(fs.existsSync(path)){
+    return true; 
+  }
+  return false;
+}
+
+function retrieveAccountMatches(accountId, path){  
+  return JSON.parse(fs.readFileSync(path));
+}
 // Pass in options object with
-function get_account_id(username, options){     
-  
+function get_account_id(username, options){       
   return new Promise((resolve, reject) => {
     options.url = account_id_host + username + api_key_query;  
     request(options, function(error, response, body){
@@ -94,8 +104,7 @@ function retrieve_match(match_id){
 * @param{string} rival_id - Rival's account ID
 * @param{string} match_body - JSON's string from Riot API
 * @param{array} champImages - array with image locations
-* @param{Object} misc_info - 
-* @param {Object} user_info - All information pertaining to the user.
+* @param{Object} user_info - All information pertaining to the user.
 */
 function search_rival_in_matches(user_id, rival_id, match_body, champImages, misc_info, user_info, rival_info){
   var response = JSON.parse(match_body);
@@ -109,7 +118,7 @@ function search_rival_in_matches(user_id, rival_id, match_body, champImages, mis
   for (var i = 0; i < participants.length; i++){
     var details = response['participants'][i];
     if (participants[i]['player']['currentAccountId'] == user_id){
-      misc_info.won = stats['win'];
+      misc_info.won = details['win'];
       // TODO: Remove misc_info once refactored.
       misc_info.user_loc = i;
       user_info.index = i;
@@ -148,22 +157,48 @@ router.get('/', function(req,res,next){
   var promise3 = promise1.then(get_match_list, console.warn);
   var list_of_promises = [promise2, promise1];
   Promise.all([promise3, promise2, promise1]).then(function(values) {
-    for (var i = 0; i < 17; i++){ // Due to request restrictions
-      list_of_promises.push(retrieve_match(values[0][i]['gameId']));
+
+    // TODO: Rate limiting
+    // TODO: Check for existing file
+    const accountId = values[2];
+    var path = 'public/data/user_data/' + accountId;
+    console.warn("Account ID: " + accountId);
+    
+    if (accountFileExists(accountId, path)){      
+      var cache = retrieveAccountMatches(accountId, path)
+      path = '';
+      list_of_promises.push(path);
+      for(var i = 0; i < cache.length; i++){
+        list_of_promises.push(cache[i]);
+      }      
+      
     }
+    else{
+      const rateLimit = 17;
+      fs.writeFileSync(path,'');
+      list_of_promises.push(path);
+      for (var i = 0; i < rateLimit; i++){ // Due to request restrictions 
+        list_of_promises.push(retrieve_match(values[0][i]['gameId']));      
+      }
+    }
+    
     return Promise.all(list_of_promises)
   })
   .then(function(values){
     const rival = values[0];  
     const user = values[1];
+    const path = values[2];
+
     // Turn this into an object array
     var all_matches = [];    
     var match_results = [];
     var user_locations = [];
     var rival_locations = [];
     var match_ids = [];
-    for(var i = 2; i < values.length; i++){
+    var cache = [];
+    for(var i = 3; i < values.length; i++){
       var champImages = []
+      cache.push(values[i]);
       var misc_info = { won: false, user_loc: 0, rival_loc: 0} ;
       // index: index in which player is located
       var user_info = { champImage: "", index: 0, details: null};
@@ -177,7 +212,13 @@ router.get('/', function(req,res,next){
         // list_of_kdas.push()
         match_ids.push(match_id)
       }
-		}
+    }
+    if (path !== ''){ 
+      fs.appendFile(path, JSON.stringify(cache), function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+    }    
 		// console.warn(all_matches);    
     console.warn(match_ids);
     var title = "lol-rival: " + username;
@@ -188,6 +229,7 @@ router.get('/', function(req,res,next){
       rival_locations: rival_locations, match_ids: match_ids
       }
     )    
+
   })
   .catch(console.warn);
   
