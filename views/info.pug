@@ -1,9 +1,10 @@
 extends layout
 
 block content 
-		h3 Username: #{username}
-		h3 Rival: #{rival}    
-		h3 Number of games played together: #{number}
+		div
+			h3 Username: #{username}
+			h3 Rival: #{rival}    
+			h3 Number of games played together: #{number}
 		div.matchList
 			- var matchList = match
 			- var matchListResult = match_results
@@ -13,9 +14,9 @@ block content
 				-var win = matchListResult[i]
 				- var matchIds = match_ids[i]	
 				- if (win)
-					| <div class='match clearfix win'>
+					| <div class='match center clearfix win'>
 				- else {
-					| <div class='match clearfix loss'>
+					| <div class='match center clearfix loss'>
 				-}							
 				| <a href='#{matchIds}'><span class="link"></span></a>
 				- for(var j = 0; j < 2; j++){
@@ -28,9 +29,9 @@ block content
 							- if (k % 2 === 0)
 								- var position = (j)*5+(k/2)
 								- var tmp = matchList[i][j][k]
-								- if (userLocs[i] === position)
+								- if (parseInt(userLocs[i].index) === position)
 									| <li class="user">
-								- else if(rivalLocs[i] === position)
+								- else if(parseInt(rivalLocs[i].index) === position)
 									| <li class="rival">
 								- else
 									| <li>

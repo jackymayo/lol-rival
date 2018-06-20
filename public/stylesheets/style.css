@@ -14,9 +14,8 @@ body {
   animation: spin 2s linear infinite;
 }
 
-
 .textInputFix {
-  width: 286px;
+  width: 320px;
   font-size: 17px;
   height: 42px;
 }
@@ -30,6 +29,10 @@ body {
   margin-left: 14px;
   width: 600px;
 }
+
+.logo-button:hover{
+  background-color: #4FDB0E;
+}
 .center{    
   display: table;
   margin-left: auto;
@@ -37,14 +40,15 @@ body {
 }
 .match {
   position: relative;
-  padding: 20px 20px 20px 10px;
+  padding: 10px ;
   margin-bottom: 20px;
   border-radius: 1px;
-  width: 100%;
+  width: 500px;
+  font-size: 11px;
 }
 
 .matchList{
-  max-width: 900px;
+  max-width: 100%;
   display: block;
 }
 .win{
@@ -76,11 +80,11 @@ body {
   /* background-image: url('empty.gif'); */
 }   
 .left{ 
-  width: 240px;
+  width: 220px;
   float: left;
 }
 .right{
-  width: 240px;
+  width: 220px;
   float: right;
 }
 .submit{

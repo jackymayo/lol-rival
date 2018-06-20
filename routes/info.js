@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const util = require('util')
 var request = require('request');
 var fs = require('fs');
 // TODO: check for realm 
@@ -94,8 +95,9 @@ function retrieve_match(match_id){
 * @param{string} match_body - JSON's string from Riot API
 * @param{array} champImages - array with image locations
 * @param{Object} misc_info - 
+* @param {Object} user_info - All information pertaining to the user.
 */
-function search_rival_in_matches(user_id, rival_id, match_body, champImages, misc_info){
+function search_rival_in_matches(user_id, rival_id, match_body, champImages, misc_info, user_info, rival_info){
   var response = JSON.parse(match_body);
   // fs.writeFileSync("public/data/matchid.json", JSON.stringify(response));
   var match_id = response['gameId'];
@@ -105,12 +107,18 @@ function search_rival_in_matches(user_id, rival_id, match_body, champImages, mis
 	var left = [];
 	var right = [];
   for (var i = 0; i < participants.length; i++){
+    var details = response['participants'][i];
     if (participants[i]['player']['currentAccountId'] == user_id){
-      misc_info.won = response['participants'][i]['stats']['win'];
+      misc_info.won = stats['win'];
+      // TODO: Remove misc_info once refactored.
       misc_info.user_loc = i;
+      user_info.index = i;
+      user_info.details = details;
     }
     if (participants[i]['player']['currentAccountId'] == rival_id){     
       misc_info.rival_loc = i;
+      rival_info.index = i;
+      rival_info.details = details;
       for(var j = 0; j < 10; j++ ){  
         var champID = response['participants'][j]['championId'];        
         var champImage = image_url + getChampionById(championsJSON, champID);
@@ -153,16 +161,18 @@ router.get('/', function(req,res,next){
     var match_results = [];
     var user_locations = [];
     var rival_locations = [];
-    var list_of_kdas = [];
     var match_ids = [];
     for(var i = 2; i < values.length; i++){
       var champImages = []
       var misc_info = { won: false, user_loc: 0, rival_loc: 0} ;
-      var match_id = match_history_url + search_rival_in_matches(user, rival, values[i] , champImages, misc_info );
+      // index: index in which player is located
+      var user_info = { champImage: "", index: 0, details: null};
+      var rival_info ={ champImage: "", index: 0, details: null};
+      var match_id = match_history_url + search_rival_in_matches(user, rival, values[i] , champImages, misc_info, user_info, rival_info);
       if (champImages.length !== 0){
         match_results.push(misc_info.won);
-        user_locations.push(misc_info.user_loc);
-        rival_locations.push(misc_info.rival_loc);
+        user_locations.push(user_info);
+        rival_locations.push(rival_info);
         all_matches.push(champImages);
         // list_of_kdas.push()
         match_ids.push(match_id)
@@ -174,7 +184,7 @@ router.get('/', function(req,res,next){
     res.render('info', { 
       title: title, username, rival: rival_username, 
       match: all_matches, number: all_matches.length,
-      match_results: match_results,user_locations: user_locations,
+      match_results: match_results, user_locations: user_locations,
       rival_locations: rival_locations, match_ids: match_ids
       }
     )    
