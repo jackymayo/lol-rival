@@ -14,7 +14,7 @@ const api_key_query = '?api_key=' +  api_key;
 const patch_version = "8.9.1";
 const ddragon_host = 'http://ddragon.leagueoflegends.com/cdn/' + patch_version;
 const image_url = ddragon_host + '/img/champion/';
-const championsJSON = JSON.parse(fs.readFileSync( 'public/data/champion.json', "utf8"))['data'];
+const championsJSON = JSON.parse(fs.readFileSync( 'public/data/champion.json', "utf-8"))['data'];
 var account_id_host = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/';
 var match_list_host = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/';
 var match_detail_host = 'https://na1.api.riotgames.com/lol/match/v3/matches/';
@@ -51,7 +51,7 @@ function accountFileExists(accountId, path){
 }
 
 function retrieveAccountMatches(accountId, path){  
-  return JSON.parse(fs.readFileSync(path));
+  return JSON.parse(fs.readFileSync(path, "utf-8"));
 }
 // Pass in options object with
 function get_account_id(username, options){       
@@ -216,14 +216,13 @@ router.get('/', function(req,res,next){
         user_locations.push(user_info);
         rival_locations.push(rival_info);
                 
-        console.warn(rival_info.details);
         all_matches.push(champImages);        
         match_ids.push(match_id)
       }
       
     }
     if (path !== ''){ 
-      fs.writeFile(path, JSON.stringify(cache), function (err) {
+      fs.writeFile(path, JSON.stringify(cache), "utf-8", function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
