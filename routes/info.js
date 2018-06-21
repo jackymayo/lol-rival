@@ -181,8 +181,7 @@ router.get('/', function(req,res,next){
       
     }
     else{
-      const rateLimit = 17;
-      fs.writeFileSync(path,'');
+      const rateLimit = 17;      
       list_of_promises.push(path);
       for (var i = 0; i < rateLimit; i++){ // Due to request restrictions 
         list_of_promises.push(retrieve_match(values[0][i]['gameId']));      
@@ -224,7 +223,7 @@ router.get('/', function(req,res,next){
       
     }
     if (path !== ''){ 
-      fs.appendFile(path, JSON.stringify(cache), function (err) {
+      fs.writeFile(path, JSON.stringify(cache), function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
