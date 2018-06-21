@@ -11,7 +11,7 @@ var fs = require('fs');
 
 const api_key = fs.readFileSync('public/data/api.txt', "utf-8");
 const api_key_query = '?api_key=' +  api_key;
-const patch_version = "8.9.1";
+const patch_version = "8.12.1";
 const ddragon_host = 'http://ddragon.leagueoflegends.com/cdn/' + patch_version;
 const image_url = ddragon_host + '/img/champion/';
 const championsJSON = JSON.parse(fs.readFileSync( 'public/data/champion.json', "utf-8"))['data'];
