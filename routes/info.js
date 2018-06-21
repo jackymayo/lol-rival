@@ -109,8 +109,7 @@ function retrieve_match(match_id){
 function search_rival_in_matches(user_id, rival_id, match_body, champImages, misc_info, user_info, rival_info){
   var response = JSON.parse(match_body);
   // fs.writeFileSync("public/data/matchid.json", JSON.stringify(response));
-  var match_id = response['gameId'];
-  var userWins = false;
+  var match_id = response['gameId'];  
   var participants = response['participantIdentities'];
 
 	var left = [];
@@ -118,11 +117,12 @@ function search_rival_in_matches(user_id, rival_id, match_body, champImages, mis
   for (var i = 0; i < participants.length; i++){
     var details = response['participants'][i];
     if (participants[i]['player']['currentAccountId'] == user_id){
-      misc_info.won = details['win'];
+      misc_info.won = details['stats']['win'];
+      
       // TODO: Remove misc_info once refactored.
       misc_info.user_loc = i;
       user_info.index = i;
-      user_info.details = details;
+      user_info.details = details;    
     }
     if (participants[i]['player']['currentAccountId'] == rival_id){     
       misc_info.rival_loc = i;
@@ -131,13 +131,20 @@ function search_rival_in_matches(user_id, rival_id, match_body, champImages, mis
       for(var j = 0; j < 10; j++ ){  
         var champID = response['participants'][j]['championId'];        
         var champImage = image_url + getChampionById(championsJSON, champID);
+        if (rival_info.index === j){
+          rival_info.champImage = champImage;
+        }
+        if (user_info.index === j){
+          user_info.champImage = champImage;
+        }
         var summoner =  participants[j]['player']['summonerName'];
         if (Math.floor(j/ 5)  === 0){ left.push(champImage); left.push(summoner);}
         else{ right.push(champImage); right.push(summoner);}
       }
-			champImages.push(left);
-			champImages.push(right);
+      champImages.push(left);
+      champImages.push(right);
     }
+
   }
   return match_id;
 }
@@ -162,7 +169,7 @@ router.get('/', function(req,res,next){
     // TODO: Check for existing file
     const accountId = values[2];
     var path = 'public/data/user_data/' + accountId;
-    console.warn("Account ID: " + accountId);
+    
     
     if (accountFileExists(accountId, path)){      
       var cache = retrieveAccountMatches(accountId, path)
@@ -204,14 +211,17 @@ router.get('/', function(req,res,next){
       var user_info = { champImage: "", index: 0, details: null};
       var rival_info ={ champImage: "", index: 0, details: null};
       var match_id = match_history_url + search_rival_in_matches(user, rival, values[i] , champImages, misc_info, user_info, rival_info);
+      
       if (champImages.length !== 0){
         match_results.push(misc_info.won);
         user_locations.push(user_info);
         rival_locations.push(rival_info);
-        all_matches.push(champImages);
-        // list_of_kdas.push()
+                
+        console.warn(rival_info.details);
+        all_matches.push(champImages);        
         match_ids.push(match_id)
       }
+      
     }
     if (path !== ''){ 
       fs.appendFile(path, JSON.stringify(cache), function (err) {
@@ -219,8 +229,7 @@ router.get('/', function(req,res,next){
         console.log('Saved!');
       });
     }    
-		// console.warn(all_matches);    
-    console.warn(match_ids);
+
     var title = "lol-rival: " + username;
     res.render('info', { 
       title: title, username, rival: rival_username, 

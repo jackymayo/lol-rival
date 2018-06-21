@@ -1,27 +1,36 @@
 extends layout
 
 block content 
-		div
-			h3 Username: #{username}
-			h3 Rival: #{rival}    
-			h3 Number of games played together: #{number}
-		div.matchList
-			- var matchList = match
-			- var matchListResult = match_results
-			- var userLocs = user_locations
-			- var rivalLocs = rival_locations			
-			- for(var i = 0; i < matchList.length; i++){
+	div
+		h3.display-3  
+			i.fas.fa-user 
+			|  #{username}
+		h3.display-3 
+			i.fas.fa-user-ninja
+			|  #{rival}    
+		p.lead Games played together: #{number}
+	div.matchList
+		- var matchList = match
+		- var matchListResult = match_results
+		- var userLocs = user_locations
+		- var rivalLocs = rival_locations			
+		- for(var i = 0; i < matchList.length; i++){
+			div.matchholder
+				div.box-l.card
+					- var champ = userLocs[i].champImage						
+					img(src=champ class="customShape")
+					p.lead #{userLocs[i].details.stats.kills}/#{userLocs[i].details.stats.deaths}/#{userLocs[i].details.stats.assists}
 				-var win = matchListResult[i]
-				- var matchIds = match_ids[i]	
+				-var matchIds = match_ids[i]	
 				- if (win)
-					| <div class='match center clearfix win'>
+					| <div class='match clearfix win'>
 				- else {
-					| <div class='match center clearfix loss'>
+					| <div class='match clearfix loss'>
 				-}							
 				| <a href='#{matchIds}'><span class="link"></span></a>
 				- for(var j = 0; j < 2; j++){
 					- if (j === 0){
-						| <div class='left'>
+						| <div class='right'>
 					- } else {
 						| <div class='right'>
 					- } 
@@ -30,17 +39,21 @@ block content
 								- var position = (j)*5+(k/2)
 								- var tmp = matchList[i][j][k]
 								- if (parseInt(userLocs[i].index) === position)
-									| <li class="user">
+									| <div class="customText user">
 								- else if(parseInt(rivalLocs[i].index) === position)
-									| <li class="rival">
+									| <div class="customText rival">
 								- else
-									| <li>
+									| <div class="customText">
 								img(src=tmp class="champ")
 							- else 
 								| #{matchList[i][j][k]}
-								| </li>
+								| </div>
 						-}
 					| </div>
-					-}
+				-}
 				| </div>
-			-}
+				div.box-l.card
+					- var champ = rivalLocs[i].champImage
+					img(src=champ class="customShape")
+					p.lead #{rivalLocs[i].details.stats.kills}/#{rivalLocs[i].details.stats.deaths}/#{rivalLocs[i].details.stats.assists}
+		-}

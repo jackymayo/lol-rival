@@ -13,7 +13,10 @@ body {
   height: 120px;
   animation: spin 2s linear infinite;
 }
-
+.customText {
+  text-overflow: ellipsis;
+  margin: 1px;
+}
 .textInputFix {
   width: 320px;
   font-size: 17px;
@@ -38,13 +41,37 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
 .match {
   position: relative;
   padding: 10px ;
+  height: 160px;
   margin-bottom: 20px;
   border-radius: 1px;
   width: 500px;
   font-size: 11px;
+  float: left;
+}
+
+.matchholder{  
+  width: 80%;
+  height: 160px;
+  margin: 2px auto;
+  display: inline-block;
+}
+
+.customShape {
+
+  width: 60px;
+  border-radius: 50%;
+}
+.box-l{  
+  padding:15px;
+  float: left;
+  border: 1px solid black;
+  margin: 0 4px;
+  width: 300px;
+  height: 160px; 
 }
 
 .matchList{
@@ -79,12 +106,8 @@ body {
      make sure you have an empty gif */
   /* background-image: url('empty.gif'); */
 }   
-.left{ 
-  width: 220px;
-  float: left;
-}
-.right{
-  width: 220px;
+.right{ 
+  width: 150px;
   float: right;
 }
 .submit{
