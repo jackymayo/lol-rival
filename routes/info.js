@@ -72,11 +72,15 @@ function get_account_id(username, options){
       }
       else{
         reject("Error at get_account_id " + response.statusCode )
+		  
       }
     })
   });
 }
 
+function errorDump(statusCode){
+	
+}
 function get_match_list(accountID){  
   options.url = match_list_host + accountID + api_key_query;      
   return new Promise((resolve, reject) => {
@@ -250,7 +254,7 @@ router.get('/', function(req,res,next){
     )    
 
   })
-  .catch(console.warn);
+  .catch(res.send);
   
 
 })
