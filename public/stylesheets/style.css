@@ -53,7 +53,7 @@ body {
   float: left;
 }
 
-.matchholder{  
+.matchholder{   
   width: 80%;
   height: 160px;
   margin: 2px auto;
@@ -75,8 +75,8 @@ body {
 }
 
 .matchList{
-  max-width: 100%;
-  display: block;
+  display:table-cell;
+  vertical-align:middle;
 }
 .win{
   background-color: #A4D0EB;

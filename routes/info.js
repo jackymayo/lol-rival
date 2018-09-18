@@ -11,10 +11,14 @@ var fs = require('fs');
 
 const api_key = fs.readFileSync('public/data/api.txt', "utf-8");
 const api_key_query = '?api_key=' +  api_key;
-const patch_version = "8.12.1";
-const ddragon_host = 'http://ddragon.leagueoflegends.com/cdn/' + patch_version;
-const image_url = ddragon_host + '/img/champion/';
+const patch_version = "8.14.1";
+const ddragon_host = 'http://ddragon.leagueoflegends.com/cdn/' + patch_version + '/img/';
+const champion_image_url = ddragon_host + 'champion/';
+const summomer_spell_url = ddragon_host + 'spell/';
 const championsJSON = JSON.parse(fs.readFileSync( 'public/data/champion.json', "utf-8"))['data'];
+var temp = Object.keys(JSON.parse(fs.readFileSync( 'public/data/summoner.json', "utf-8"))['data']);
+var summonersJSON = temp;
+console.warn(temp);
 var account_id_host = 'https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/';
 var match_list_host = 'https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/';
 var match_detail_host = 'https://na1.api.riotgames.com/lol/match/v3/matches/';
@@ -41,6 +45,10 @@ function getChampionById(map, id){
         }
     }
     return "n/a";
+}
+
+function getSummonerSpellById(id){
+  return summonersJSON[id];
 }
 
 function accountFileExists(accountId, path){  
@@ -123,6 +131,10 @@ function search_rival_in_matches(user_id, rival_id, match_body, champImages, mis
       misc_info.user_loc = i;
       user_info.index = i;
       user_info.details = details;    
+      user_info.summ1 = summomer_spell_url + getSummonerSpellById(details['spell1Id']) + ".png";
+      user_info.summ2 = summomer_spell_url + getSummonerSpellById(details['spell2Id']) + ".png";
+      console.warn(user_info.summ1);
+      console.warn(user_info.summ2);
     }
     if (participants[i]['player']['currentAccountId'] == rival_id){     
       misc_info.rival_loc = i;
@@ -130,7 +142,7 @@ function search_rival_in_matches(user_id, rival_id, match_body, champImages, mis
       rival_info.details = details;
       for(var j = 0; j < 10; j++ ){  
         var champID = response['participants'][j]['championId'];        
-        var champImage = image_url + getChampionById(championsJSON, champID);
+        var champImage = champion_image_url + getChampionById(championsJSON, champID);
         if (rival_info.index === j){
           rival_info.champImage = champImage;
         }
@@ -207,8 +219,8 @@ router.get('/', function(req,res,next){
       cache.push(values[i]);
       var misc_info = { won: false, user_loc: 0, rival_loc: 0} ;
       // index: index in which player is located
-      var user_info = { champImage: "", index: 0, details: null};
-      var rival_info ={ champImage: "", index: 0, details: null};
+      var user_info = { champImage: "", summ1: "", summ2: "", index: 0, details: null};
+      var rival_info ={ champImage: "", summ1: "", summ2: "", index: 0, details: null};
       var match_id = match_history_url + search_rival_in_matches(user, rival, values[i] , champImages, misc_info, user_info, rival_info);
       
       if (champImages.length !== 0){
