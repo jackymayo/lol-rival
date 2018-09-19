@@ -1,7 +1,7 @@
 # lol-rival
 Used to track players you've recently played with
 
-<img src="https://lh4.googleusercontent.com/q1qvcJCDlrEtcMYa5tTKxv42B0_4bjx4iiMmmJwsshkfzXZLJFkZNu9LUxNDHXcR55Yg3m-k8ZkdMd9HBfLa=w3246-h1564" width="150px" height="150px">
+<img src="https://github.com/jackymayo/lol-rival/blob/master/public/images/lol-rival.png?raw=true" width="150px" height="150px">
 
 Track your past match history with a certain player.
 Enter your IDs to pulling up the stats including link to the official match history.
